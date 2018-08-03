@@ -1,11 +1,11 @@
-var restify = require('restify');
+const restify = require('restify');
 
 const server = restify.createServer({
   name: 'myapp',
   version: '1.0.0'
 });
 
-var knex = require('knex')({
+const knex = require('knex')({
   client: 'mysql',
   connection: {
     host : '127.0.0.1',
