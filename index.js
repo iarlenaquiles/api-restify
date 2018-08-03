@@ -8,10 +8,10 @@ const server = restify.createServer({
 const knex = require('knex')({
   client: 'mysql',
   connection: {
-    host : '127.0.0.1',
-    user : 'root',
-    password : 'super123',
-    database : 'api'
+    host: '127.0.0.1',
+    user: 'root',
+    password: 'super123',
+    database: 'api'
   }
 });
 
@@ -28,6 +28,14 @@ server.get('/', function (req, res, next) {
   knex('rest').then((dados) => {
     res.send(dados);
   }, next);
-  
+
   return next();
+});
+
+server.post('/create', function (req, res, next) {
+  knex('rest')
+    .insert(req.body)
+    .then((dados) => {
+      res.send(dados);
+    }, next);
 });
