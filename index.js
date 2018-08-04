@@ -25,7 +25,12 @@ server.listen(8080, function () {
   console.log('%s listening at %s', server.name, server.url);
 });
 
-server.get('/', function (req, res, next) {
+server.get('/', restify.plugins.serveStatic({
+  directory: './dist',
+  file: 'index.html'
+}));
+
+server.get('/read', function (req, res, next) {
 
   knex('rest').then((dados) => {
     res.send(dados);
@@ -50,7 +55,7 @@ server.get('/show/:id', function (req, res, next) {
     .where('id', id)
     .first()
     .then((dados) => {
-      if(!dados) return res.send(new errs.BadRequestError('nada foi encontrado'));
+      if (!dados) return res.send(new errs.BadRequestError('nada foi encontrado'));
       res.send(dados);
     }, next);
 });
@@ -63,7 +68,7 @@ server.put('/update/:id', function (req, res, next) {
     .where('id', id)
     .update(req.body)
     .then((dados) => {
-      if(!dados) return res.send(new errs.BadRequestError('nada foi encontrado'));
+      if (!dados) return res.send(new errs.BadRequestError('nada foi encontrado'));
       res.send('Dados atualizados');
     }, next);
 });
@@ -76,7 +81,7 @@ server.del('/delete/:id', function (req, res, next) {
     .where('id', id)
     .delete()
     .then((dados) => {
-      if(!dados) return res.send(new errs.BadRequestError('nada foi encontrado'));
+      if (!dados) return res.send(new errs.BadRequestError('nada foi encontrado'));
       res.send('Dados excluidos');
     }, next);
 });
